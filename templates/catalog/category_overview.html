@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.title }}{% endblock %}
+
+{% block content %}
+<div class="text-center" style="margin-top: 8em !important;">
+    {% if page_obj %}
+    <h1 style="font-family: Sourse Sans Light; font-weight: bold;">{{ category.title }}</h1>
+    {% if category.description %}
+        <div style="font-family: Sourse Sans Light;">
+           {{ category.description.html|safe }}
+        </div>
+    {% endif %}
+    <hr/>
+    <div class="container mt-5">
+         <form method="POST" action="{% url 'search_product' category.slug %}">
+             {% csrf_token %}
+            <label style="font-family: Sourse Sans Light; font-weight: bold; font-size: 1.25em; color:black;" for="searchBox">Поиск:</label>
+            <input id="searchBox" type="text" class="form-control" name="query" required/>
+            <button type="submit" class="btn btn-primary mt-2" style="width: 100%; background-color: #415E5E;">Искать</button>
+         </form>
+        <hr/>
+        <div class="row gallery-item mt-5" id="products-container">
+            {% for product in page_obj %}
+                <div class="col-md-4 item" >
+                    {% if product.get_cover_image  %}
+                        <a href="{{ product.image_set.first.image.url }}" class="img-pop-up">
+                            <div class="single-gallery-image" style="background: url('{{ product.image_set.first.image.url }}'); border: 1px solid black;"></div>
+                        </a>
+                    {% else %}
+                        <div class="single-gallery-image" style="background: url('{% static 'images/image-placeholder.png' %}'); border: 1px solid black;"></div>
+                    {% endif %}
+                    <a href="{% url 'product_overview' product.category.slug product.slug %}">
+                    <h2 style="color:black !important; font-weight: bold; font-family: Sourse Sans Light;">
+                        {{ product.title }}
+                    </h2>
+                    <h3 style="font-family: Sourse Sans Light;">Цена: {{ product.price }} ₸</h3>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% include 'parts/_pagination.html' %}
+    </div>
+    {% else %}
+        <div class="container">
+            <form method="POST" action="{% url 'category_overview' category.slug %}">
+                 {% csrf_token %}
+                <label style="font-family: Sourse Sans Light; font-weight: bold; font-size: 1.25em; color:black;" for="searchBox">Поиск:</label>
+                <input id="searchBox" type="text" class="form-control" name="query" required/>
+                <button type="submit" class="btn btn-primary mt-2" style="width: 100%; background-color: #415E5E;">Искать</button>
+             </form>
+             <h1 style="font-family: Sourse Sans Light; font-weight: bold;" class="mt-5">В категории {{ category.title }} нет продуктов</h1>
+        </div>
+     </div>
+    {% endif %}
+</div>
+{% endblock %}

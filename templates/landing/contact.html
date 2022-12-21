@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 10em; ">
+    <div class="text-content">{{ contact_page.content.html|safe }}</div>
+</div>
+{% endblock %}

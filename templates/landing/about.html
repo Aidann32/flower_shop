@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}О нас{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 10em; ">
+    <div class="text-content">{{ about_page.content.html|safe }}</div>
+</div>
+{% endblock %}

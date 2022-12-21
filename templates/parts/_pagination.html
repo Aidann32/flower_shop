@@ -1,0 +1,51 @@
+<style>
+    .page-item > a{
+        background-color: #0b2e13;
+        color:white;
+        font-family: Sourse Sans Light;
+        font-weight: bold;
+        font-size: 1.25em;
+    }
+    .page-item.active .page-link{
+        background-color: seagreen !important;
+        border: 1px solid darkgreen;
+    }
+</style>
+
+<nav class="mt-5 mb-5" id="pagination">
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+      {% if page_obj.number > 3 %}
+        <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+        {% if page_obj.number > 4 %}
+          <li class="page-item"> <a href="" class="page-link" style="pointer-events: none; cursor: default;">...</a></li>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+          <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}<span class="sr-only">(current)</span></a></li>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+        <li class="page-item"> <a href="" class="page-link" style="pointer-events: none; cursor: default;">...</a></li>
+        <li class="page-item">
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">{{ page_obj.paginator.num_pages }}</a>
+        </li>
+      {% elif page_obj.number < page_obj.paginator.num_pages|add:'-2' %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a></li>
+      {% endif %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">
+              <span aria-hidden="true">&raquo;</span></a>
+          </li>
+    {% endif %}
+  </ul>
+</nav>

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+{% block style %}
+<style>
+    .slider_area{
+        background-size: cover !important;
+        background-image: url('{{ main_page.get_image_url }}');
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'parts/_banner.html' %}
+
+<div class="section-top-border text-center">
+    {% if products %}
+        <h2 style="font-family: Sourse Sans Light;">Наши продукты</h2>
+        <div class="container">
+            <div class="row gallery-item">
+                {% for product in products %}
+                    <div class="col-md-4">
+                        {% if product.get_cover_image  %}
+                            <a href="{{ product.get_cover_image.image.url }}" class="img-pop-up">
+                                <div class="single-gallery-image" style="background: url('{{ product.image_set.first.image.url }}'); border: 1px solid black;"></div>
+                            </a>
+                        {% else %}
+                            <div class="single-gallery-image" style="background: url('{% static 'images/image-placeholder.png' %}'); border: 1px solid black;"></div>
+                        {% endif %}
+                        <a href="{% url 'product_overview' product.category.slug product.slug %}">
+                        <h2 style="color:black !important; font-weight: bold; font-family: Sourse Sans Light;">
+                            {{ product.title }}
+                        </h2>
+                        <h3 style="font-family: Sourse Sans Light;">Цена: {{ product.price }} ₸</h3>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    {% if main_page.content %}
+        <hr>
+        <div class="text-content">{{ main_page.content.html|safe }}</div>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+    let slider_area = document.querySelector('.slider_area');
+    window.onload = function () {
+        let backgroundImg = []
+        {% for image in main_page.image_set.all %}
+            backgroundImg.push('{{ image.image.url }}')
+        {% endfor %}
+
+        setInterval(changeImage, 2500);
+        function changeImage() {
+        var i = Math.floor((Math.random() * backgroundImg.length));
+        slider_area.style.backgroundImage = "url('"+backgroundImg[i]+"')";
+      }
+    }
+</script>
+{% endblock %}

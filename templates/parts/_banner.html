@@ -1,0 +1,28 @@
+{% load static %}
+
+<div class="slider_area">
+    <div class="single_slider d-flex align-items-center slider_bg_1 overlay scrolling-image">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-xl-12">
+                    <div class="slider_text text-center">
+                        <span class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".3s"></span>
+                        {% if main_page.banner_title %}
+                            <h3 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".4s" style="font-family: GardensC;">{{ main_page.banner_title }}</h3>
+                        {% else %}
+                        <h3 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".4s" style="font-family: GardensC;">LA <br>BOUQUET</h3>
+                        {% endif %}
+                        {% if main_page.banner_description %}
+                            <p class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".5s" style="font-family: Sourse Sans Light;">{{ main_page.banner_description }}</p>
+                        {% else %}
+                            <p class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".5s" style="font-family: Sourse Sans Light;">Цветочный салон в городе Актобе</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.title }}{% endblock %}
+
+{% block links %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="container">
+<nav aria-label="breadcrumb" style="margin-top: 5em !important;" class="">
+  <ol class="breadcrumb text-center">
+    <li class="breadcrumb-item"><a  style="color:black !important;" href="{% url 'category_overview' product.category.slug %}">{{ product.category.title }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page" >{{ product.title }}</li>
+  </ol>
+</nav>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 10em !important; margin-bottom: 10em !important;">
+<div class="row">
+    <div class="col-lg-6 text-center">
+      {% if product.get_cover_image %}
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+              {% for image in product.image_set.all %}
+                    {% if forloop.counter0 == 0 %}
+                        <div class="carousel-item active">
+                            <a href="{{ image.image.url }}" class="img-pop-up">
+                                <img class="d-block w-100 img-pop-up" src="{{ image.image.url }}" style="object-fit: cover !important; height: 500px;">
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="carousel-item">
+                            <a href="{{ image.image.url }}" class="img-pop-up">
+                                <img class="d-block w-100" src="{{ image.image.url }}" style="object-fit: cover !important; height: 500px;">
+                            </a>
+                        </div>
+                    {% endif %}
+              {% endfor %}
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+              {% else %}
+                <div class="single-gallery-image" style="background: url('{% static 'images/image-placeholder.png' %}'); border: 1px solid black;"></div>
+      {% endif %}
+        <h2 class="mt-4" style="font-family: Sourse Sans Light">Цена: {{ product.price }} ₸</h2>
+    </div>
+    <div class="col-lg-6">
+        <h1 style="font-family: Sourse Sans Light">{{ product.title }}</h1>
+        <p style="font-family: Sourse Sans Light">{{ product.description.html|safe }}</p>
+    </div>
+    </div>
+</div>
+{% endblock %}
